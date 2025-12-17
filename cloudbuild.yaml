@@ -30,3 +30,5 @@ steps:
 
 images:
   - 'europe-west3-docker.pkg.dev/$PROJECT_ID/app-repo/python-app:$SHORT_SHA'
+options:
+  logging: CLOUD_LOGGING_ONLY
