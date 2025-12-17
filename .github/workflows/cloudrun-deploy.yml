@@ -3,31 +3,36 @@ name: Deploy to Cloud Run
 on:
   push:
     branches:
-      - main
+      - main  # Ana branch değişikliklerinde tetiklenir
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      # 1️⃣ Repo’yu checkout et
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Authenticate to Google Cloud
-      uses: google-github-actions/auth@v1
-      with:
-        credentials_json: ${{ secrets.GCP_SA_KEY }}
+      # 2️⃣ GCP ile authenticate ol
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
-      with:
-        project_id: cloudrun-cicd-481505
-        install_components: 'gke-gcloud-auth-plugin'
+      # 3️⃣ Gcloud SDK kur
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: cloudrun-cicd-481505
+          install_components: 'gke-gcloud-auth-plugin'
 
-    - name: Build and Deploy to Cloud Run
-      run: |
-        gcloud run deploy cloudrun-app \
-          --region europe-west1 \
-          --source . \
-          --platform managed \
-          --quiet
+      # 4️⃣ Docker image build ve deploy
+      - name: Build and Deploy to Cloud Run
+        run: |
+          gcloud run deploy cloudrun-app \
+            --region europe-west1 \
+            --source . \
+            --platform managed \
+            --allow-unauthenticated \
+            --quiet
