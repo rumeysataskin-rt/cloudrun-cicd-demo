@@ -4,14 +4,14 @@ steps:
     args: 
       - 'build'
       - '-t'
-      - 'europe-west3-docker.pkg.dev/$PROJECT_ID/app-repo/python-app:$SHORT_SHA'
+      - 'europe-west3-docker.pkg.dev/$PROJECT_ID/my-app-repo/python-app:$SHORT_SHA'
       - '.'
 
   # 2. Adım: Image'ı Artifact Registry'ye Yükle
   - name: 'gcr.io/cloud-builders/docker'
     args: 
       - 'push'
-      - 'europe-west3-docker.pkg.dev/$PROJECT_ID/app-repo/python-app:$SHORT_SHA'
+      - 'europe-west3-docker.pkg.dev/$PROJECT_ID/my-app-repo/python-app:$SHORT_SHA'
 
   # 3. Adım: Cloud Run'a Deploy Et
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -21,7 +21,7 @@ steps:
       - 'deploy'
       - 'python-app'
       - '--image'
-      - 'europe-west3-docker.pkg.dev/$PROJECT_ID/app-repo/python-app:$SHORT_SHA'
+      - 'europe-west3-docker.pkg.dev/$PROJECT_ID/my-app-repo/python-app:$SHORT_SHA'
       - '--region'
       - 'europe-west3'
       - '--platform'
@@ -29,6 +29,6 @@ steps:
       - '--allow-unauthenticated'
 
 images:
-  - 'europe-west3-docker.pkg.dev/$PROJECT_ID/app-repo/python-app:$SHORT_SHA'
+  - 'europe-west3-docker.pkg.dev/$PROJECT_ID/my-app-repo/python-app:$SHORT_SHA'
 options:
   logging: CLOUD_LOGGING_ONLY
